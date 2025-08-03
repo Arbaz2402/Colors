@@ -8,6 +8,12 @@
 [![Firebase](https://img.shields.io/badge/Firebase-Enabled-yellow.svg)](https://firebase.google.com/)
 
 ## ✨ Features
+![WhatsApp Image 2025-08-03 at 19 58 08 (2)](https://github.com/user-attachments/assets/b90aba06-716c-4fe1-8a0a-66076ad86b78)
+![WhatsApp Image 2025-08-03 at 19 58 08 (1)](https://github.com/user-attachments/assets/8d3ee234-f7ed-4e03-b88d-889377c9d973)
+![WhatsApp Image 2025-08-03 at 19 58 08](https://github.com/user-attachments/assets/60a10ead-1ff3-4312-9e09-45d1300714d0)
+![WhatsApp Image 2025-08-03 at 19 58 07 (1)](https://github.com/user-attachments/assets/adf50d13-29c0-4aad-9fa0-8ef594e21fd2)
+![WhatsApp Image 2025-08-03 at 19 58 07](https://github.com/user-attachments/assets/8db46fcb-3e65-4884-b6cc-d1c4d421f12a)
+
 
 ### 🎯 **Core Functionality**
 - **🎲 Random Color Generation** - Generate beautiful, random colors with a single tap
