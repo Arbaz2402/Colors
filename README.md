@@ -75,5 +75,6 @@
 **Made with ❤️ and SwiftUI**
 
 *Colors App - Where creativity meets technology*
+![WhatsApp Image 2025-08-03 at 19 58 08 (2)](https://github.com/user-attachments/assets/1a46873b-b364-4bc5-806f-0e53c7000d92)
 
 </div>
