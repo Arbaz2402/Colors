@@ -19,7 +19,7 @@ class ColorViewModel: ObservableObject {
     func generateRandomColor() {
         let hex = ColorViewModel.randomHexColor()
         let card = ColorCard(id: UUID(), hexCode: hex, timestamp: Date())
-        colorCards.append(card)
+        colorCards.insert(card, at: 0)
         saveLocally()
         if isOnline {
             syncWithFirebase()

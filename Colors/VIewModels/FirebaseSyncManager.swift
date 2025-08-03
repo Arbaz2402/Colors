@@ -8,6 +8,7 @@ class FirebaseSyncManager {
     
     // Call this to sync colors to Firestore
     func syncColors(_ colors: [ColorCard], completion: @escaping (Result<Void, Error>) -> Void) {
+        print("Attempting to sync colors to Firestore: count = \(colors.count)")
         // If no internet, save to pending
         guard isOnline() else {
             savePending(colors)
@@ -46,17 +47,21 @@ class FirebaseSyncManager {
     private func savePending(_ colors: [ColorCard]) {
         if let data = try? JSONEncoder().encode(colors) {
             UserDefaults.standard.set(data, forKey: pendingKey)
+            print("Saved \(colors.count) pending colors for later sync.")
         }
     }
     private func loadPending() -> [ColorCard] {
         guard let data = UserDefaults.standard.data(forKey: pendingKey),
               let colors = try? JSONDecoder().decode([ColorCard].self, from: data) else {
+            print("No pending colors to load.")
             return []
         }
+        print("Loaded \(colors.count) pending colors from UserDefaults.")
         return colors
     }
     private func clearPending() {
         UserDefaults.standard.removeObject(forKey: pendingKey)
+        print("Cleared pending colors after successful sync.")
     }
     private func isOnline() -> Bool {
         // You may want to use NWPathMonitor or other real check
@@ -66,10 +71,13 @@ class FirebaseSyncManager {
     // Delete a color card from Firestore
     func deleteColorFromFirebase(_ card: ColorCard, completion: ((Result<Void, Error>) -> Void)? = nil) {
         let ref = db.collection("colorCards").document(card.id.uuidString)
+        print("Attempting to delete color card from Firestore: \(card.id.uuidString)")
         ref.delete { error in
             if let error = error {
+                print("Failed to delete card from Firestore: \(error.localizedDescription)")
                 completion?(.failure(error))
             } else {
+                print("Successfully deleted card from Firestore: \(card.id.uuidString)")
                 completion?(.success(()))
             }
         }
