@@ -5,6 +5,7 @@ struct ColorsView: View {
     @State private var showingConnectivityPopup = false
     @State private var connectivityMessage = ""
     @State private var isGenerating = false
+    @State private var hasInitializedConnectivity = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     
@@ -49,22 +50,12 @@ struct ColorsView: View {
         NavigationView {
             ZStack {
                 VStack(spacing: 0) {
-                    // Subtle connectivity indicator
+                    // Color count below title
                     HStack {
-                        HStack(spacing: 6) {
-                            Circle()
-                                .fill(viewModel.isOnline ? Color.green : Color.red)
-                                .frame(width: 8, height: 8)
-                                .scaleEffect(viewModel.isOnline ? 1.0 : 0.8)
-                                .animation(.easeInOut(duration: 0.3), value: viewModel.isOnline)
-                            Text(viewModel.isOnline ? "Online" : "Offline")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
                         Text("\(viewModel.colorCards.count) colors")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
+                            .font(.subheadline)
+                            .foregroundColor(.primary)
+                        Spacer()
                     }
                     .padding(.horizontal, adaptivePadding)
                     .padding(.top, 8)
@@ -104,8 +95,23 @@ struct ColorsView: View {
                     connectivityPopup
                 }
             }
-            .navigationTitle("Color Palette")
-            .navigationBarTitleDisplayMode(isCompact ? .large : .inline)
+            .navigationTitle("Colors")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    // Connectivity indicator only
+                    HStack(spacing: 3) {
+                        Circle()
+                            .fill(viewModel.isOnline ? Color.green : Color.red)
+                            .frame(width: 5, height: 5)
+                            .scaleEffect(viewModel.isOnline ? 1.0 : 0.8)
+                            .animation(.easeInOut(duration: 0.3), value: viewModel.isOnline)
+                        Text(viewModel.isOnline ? "Online" : "Offline")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
             .onChange(of: viewModel.isOnline) { _, newValue in
                 showConnectivityPopup(isOnline: newValue)
             }
@@ -274,6 +280,12 @@ struct ColorsView: View {
     }
     
     private func showConnectivityPopup(isOnline: Bool) {
+        // Only show popup if connectivity has been initialized (not on first load)
+        guard hasInitializedConnectivity else {
+            hasInitializedConnectivity = true
+            return
+        }
+        
         connectivityMessage = isOnline ? "Connected to Internet" : "No Internet Connection"
         
         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
@@ -477,7 +489,7 @@ struct ColorCardView: View {
         .padding(adaptiveCardPadding)
         .background(
             RoundedRectangle(cornerRadius: adaptiveCardCornerRadius)
-                .fill(Color(.systemBackground))
+                .fill(Color.clear)
                 .shadow(
                     color: Color.black.opacity(isPressed ? 0.15 : 0.08),
                     radius: isPressed ? (horizontalSizeClass == .regular ? 16 : 12) : (horizontalSizeClass == .regular ? 12 : 8),
